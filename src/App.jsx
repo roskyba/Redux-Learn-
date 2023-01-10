@@ -1,9 +1,18 @@
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
 import reactLogo from "./assets/react.svg";
 import "./App.css";
+import { increment } from "./features/counterSlice";
 
 const App = () => {
-  const [count, setCount] = useState(0);
+  const count = useSelector((state) => {
+    console.log("state inside useSelecto hook", state);
+    return state.counter.count;
+  });
+  // 2-nd way using destructurin
+  // const { count } = useSelector((state) => state.counter);
+  const dispath = useDispatch();
 
   return (
     <div className="App">
@@ -22,12 +31,9 @@ const App = () => {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
+        <button onClick={() => dispath(increment())}>
           count is {count}
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
