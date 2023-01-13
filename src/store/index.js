@@ -1,15 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "../features/counterSlice";
-import themeReducer from "../features/themeSlice";
 
-console.log("counterReducer", counterReducer);
-console.log("themeReducer", themeReducer);
+import themeReducer from "../features/theme/themeSlice";
+import tabsReducer from "../features/tabs/tabsSlice";
+import userReducer from "../features/users/usersSlice";
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
     theme: themeReducer,
+    tabs: tabsReducer,
+    users: userReducer,
   },
 });
-
-console.log("store inside store.js", store);
