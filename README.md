@@ -1,127 +1,32 @@
-# Redux Toolkit
-
-#### Docs
-
-[Redux Toolkit Docs](https://redux-toolkit.js.org/introduction/getting-started)
-
-#### Install Template
-
-```sh
-npx create-react-app my-app
-```
-
-#### Existing App
-
-```sh
-npm install @reduxjs/toolkit react-redux
-```
-
 #### @reduxjs/toolkit
 
-consists of few libraries
+#### thunk
 
-- redux (core library, state management)
-- immer (allows to mutate state)
-- redux-thunk (handles async actions)
-- reselect (simplifies reducer functions)
+The builder object in extraReducers provides methods that let us define additional case reducers that will run in response to actions defined outside of the slice:
 
-#### Extras
-
-- redux devtools
-- combine reducers
-
-#### react-redux
-
-Connects app to Redux
-
-#### Setup Store
-
-- create store.js
+builder.addCase(actionCreator, reducer): defines a case reducer that handles a single known action type based on either an RTK action creator or a plain action type string
+builder.addMatcher(matcher, reducer): defines a case reducer that can run in response to any action where the matcher function returns true
+builder.addDefaultCase(reducer): defines a case reducer that will run if no other case reducers were executed for this action.
+You can chain these together, like builder.addCase().addCase().addMatcher().addDefaultCase(). If multiple matchers match the action, they will run in the order they were defined.
 
 ```js
-import { configureStore } from "@reduxjs/toolkit";
-
-export const store = configureStore({
-  reducer: {},
-});
-```
-
-#### Setup Provider
-
-- index.js
-
-```js
-import React from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
-
-// import store and provider
-import { store } from "./store";
-import { Provider } from "react-redux";
-
-ReactDOM.render(
-    <Provider store={store}>
-      <App />
-    </Provider>
-  document.getElementById("root")
-);
-```
-
-#### Setup Counter Slice
-
-- slices are like features inside any app or entity
-- create features folder
-- create counterSlice.js (as an example)
-
-```js
-import { createSlice } from "@reduxjs/toolkit";
-
-const initialState = {
-  count: 101,
+const initialsState = {
+  users: [],
+  loading: "idle",
 };
-
-const counterSlice = createSlice({
-  name: "counter",
+// Then, handle actions in your reducers:
+const usersSlice = createSlice({
+  name: "users",
   initialState,
-});
-
-export default counterSlice.reducer;
-```
-
-- store/store.js
-
-```js
-import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "../features/counterSlice";
-
-export const store = configureStore({
-  reducer: {
-    counter: counterReducer,
+  reducers: {
+    // standard reducer logic, with auto-generated action types per reducer
+  },
+  extraReducers: (builder) => {
+    // Add reducers for additional action types here, and handle loading state as needed
+    builder.addCase(fetchUserById.fulfilled, (state, action) => {
+      // Add user to the state array
+      state.entities.push(action.payload);
+    });
   },
 });
-```
-
-#### Redux DevTools
-
-- extension
-
-#### Access store value
-
-- create App.jsx
-
-```js
-import { useSelector } from "react-redux";
-
-const App = () => {
-  const { count } = useSelector((store) => store.counter);
-
-  return (
-    <div className="nav-center">
-      <h3>Redux toolkit</h3>
-      <h4>{count}</h4>
-    </div>
-  );
-};
-export default App;
 ```
