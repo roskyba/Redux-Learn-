@@ -6,6 +6,7 @@ const initialData = {
   users: [],
   createdUsers: [],
   status: "idle", // 'idle' | 'loading' | 'succeeded' | 'failed'
+  //                        | 'pending' | 'fulfilled' | 'rejected'
   error: null,
 };
 
@@ -13,7 +14,7 @@ export const fetchUsers = createAsyncThunk(
   "users/fetchUsers",
   async () => {
     try {
-      const response = await axios.get(API_BASE_URL + "users");
+      const response = await axios.get(API_BASE_URL + "users"); //
       return response.data;
     } catch (error) {
       console.log(error);
@@ -29,7 +30,7 @@ export const createNewUser = createAsyncThunk(
         API_BASE_URL + "users",
         initialUser
       );
-      return response.data;
+      return response.data; // it is an action.payload in addCase on fullfiled
     } catch (error) {
       console.log(error);
     }
@@ -39,19 +40,15 @@ export const createNewUser = createAsyncThunk(
 const usersSlice = createSlice({
   name: "users",
   initialState: initialData,
-  reducers: {
-    changeTab: (state, action) => {
-      state.activeTab = action.payload;
-    },
-  },
-  extraReducers(builder) {
+  reducers: {},
+  extraReducers: (builder) => {
     // cases for User Create
     builder
       .addCase(fetchUsers.pending, (state) => {
         state.status = "loading";
       })
       .addCase(fetchUsers.fulfilled, (state, action) => {
-        state.status = "succeesed";
+        state.status = "succeeded";
         const loadedUsers = action.payload;
         state.users.push(...loadedUsers.data);
       })
