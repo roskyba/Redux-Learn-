@@ -12,6 +12,18 @@ const UsersList = () => {
 
   const dispatch = useDispatch();
 
+  const a = {
+    prop: 1,
+    nested: {
+      name: "Ros",
+      age: 28,
+    },
+  };
+
+  const array = [1, 2, 3, 5];
+  const b = { ...a };
+  b.nested.name = "Max";
+
   useEffect(() => {
     if (status === "idle") {
       dispatch(fetchUsers());

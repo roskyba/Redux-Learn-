@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { UserContextProvider } from "../../context/userContext";
 
 import Login from "./Login";
 import Posts from "./Posts";
@@ -23,7 +24,14 @@ const Content = () => {
         break;
     }
   };
-  return <div className="content">{renderContent(activeTab)}</div>;
+  return (
+    <div className="content">
+      <UserContextProvider>
+        {renderContent(activeTab)}
+        {/* all that is inside any component (custom or built-in) is going to be a children*/}
+      </UserContextProvider>
+    </div>
+  );
 };
 
 export default Content;
